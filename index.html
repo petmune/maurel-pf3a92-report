@@ -169,9 +169,9 @@ function setMode(m){curMode=m;curExit=modes[m].exit;$("days").value=modes[m].day
 function manual(){curMode="自訂";document.querySelectorAll(".mode-btn").forEach(function(b){b.classList.remove("active");});}
 window.setMode=setMode; window.manual=manual; window.update=update;
 
-function lineChart(series,payback,troughM){
+function lineChart(series,payback,troughM,yMinF,yMaxF){
   var W=540,H=250,pl=44,pr=14,pt=14,pb=26, n=series.length;
-  var mn=Math.min(0,Math.min.apply(null,series)), mx=Math.max.apply(null,series); var rng=(mx-mn)||1;
+  var mn=(yMinF!==undefined?yMinF:Math.min(0,Math.min.apply(null,series))), mx=(yMaxF!==undefined?yMaxF:Math.max.apply(null,series)); var rng=(mx-mn)||1;
   var sx=function(i){return pl+(W-pl-pr)*i/(n-1);}, sy=function(v){return pt+(H-pt-pb)*(1-(v-mn)/rng);};
   var d="",a="";
   for(var i=0;i<n;i++){d+=(i?"L":"M")+sx(i).toFixed(1)+" "+sy(series[i]).toFixed(1)+" ";}
@@ -183,7 +183,8 @@ function lineChart(series,payback,troughM){
   var pb_m="";
   if(payback&&payback<=24){pb_m='<line x1="'+sx(payback).toFixed(1)+'" y1="'+pt+'" x2="'+sx(payback).toFixed(1)+'" y2="'+(H-pb)+'" stroke="#1F6F5C" stroke-width="1.2" stroke-dasharray="4 3"/><circle cx="'+sx(payback).toFixed(1)+'" cy="'+sy(series[payback]).toFixed(1)+'" r="4" fill="#1F6F5C"/><text x="'+sx(payback).toFixed(1)+'" y="'+(pt+10)+'" font-size="9.5" fill="#1F6F5C" text-anchor="middle" font-weight="bold">回本 '+payback+'月</text>';}
   var tr='<circle cx="'+sx(troughM).toFixed(1)+'" cy="'+sy(series[troughM]).toFixed(1)+'" r="3.5" fill="#B8965A"/><text x="'+sx(troughM).toFixed(1)+'" y="'+(sy(series[troughM])+16).toFixed(1)+'" font-size="9" fill="#9a7b35" text-anchor="middle">最低 '+wan(series[troughM])+'萬</text>';
-  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F6F5C" stop-opacity="0.28"/><stop offset="1" stop-color="#1F6F5C" stop-opacity="0.02"/></linearGradient></defs>'+g+zero+'<path d="'+a+'" fill="url(#cg)"/><path d="'+d+'" fill="none" stroke="#14463B" stroke-width="2.2"/>'+pb_m+tr+xl+'</svg>';
+  var ec=(troughM===n-1)?'':'<circle cx="'+sx(n-1).toFixed(1)+'" cy="'+sy(series[n-1]).toFixed(1)+'" r="3.5" fill="#14463B"/><text x="'+(W-pr).toFixed(1)+'" y="'+(sy(series[n-1])-7).toFixed(1)+'" font-size="10" fill="#14463B" text-anchor="end" font-weight="bold">月24 '+wan(series[n-1])+'萬</text>';
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F6F5C" stop-opacity="0.28"/><stop offset="1" stop-color="#1F6F5C" stop-opacity="0.02"/></linearGradient></defs>'+g+zero+'<path d="'+a+'" fill="url(#cg)"/><path d="'+d+'" fill="none" stroke="#14463B" stroke-width="2.2"/>'+pb_m+tr+ec+xl+'</svg>';
 }
 function barChart(flows){
   var W=540,H=250,pl=40,pr=12,pt=16,pb=34,n=flows.length;
@@ -233,7 +234,9 @@ function update(){
   k+=kpi("成熟年現金殖利率",(r.yld*100).toFixed(1)+"%","8%累積優先股息+分紅",null,true);
   k+=kpi("募資金額 · 釋股",(r.raise/10000).toFixed(0)+"<small style='font-size:14px'> 萬</small>", gap?"<span style='color:#A23B36'>缺口 "+Math.abs(r.reserve/10000).toFixed(0)+"萬</span> · 釋股"+(r.equity*100).toFixed(1)+"%":"預備金 "+(r.reserve/10000).toFixed(0)+"萬 · 釋股"+(r.equity*100).toFixed(1)+"%", gap?"warn":"");
   $("kpis").innerHTML=k;
-  $("chartCash").innerHTML=lineChart(r.series,r.payback,r.troughM);
+  var _hi=model(Object.assign({},p,{util:1.0})), _lo=model(Object.assign({},p,{util:0.4}));
+  var _yMax=Math.max(_hi.series[24], r.series[24])*1.06, _yMin=Math.min(0,_lo.trough,r.trough);
+  $("chartCash").innerHTML=lineChart(r.series,r.payback,r.troughM,_yMin,_yMax);
   $("chartRet").innerHTML=barChart(r.invFlows);
   $("chartPL").innerHTML=plChart(r);
   // insights
