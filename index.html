@@ -61,6 +61,14 @@ input[type=range].linked::-webkit-slider-thumb{background:var(--gr)}
 .secttl{font-family:Georgia,serif;font-size:17px;color:var(--dg);margin:22px 0 4px;display:flex;align-items:center;gap:8px}
 .secttl::before{content:"";width:14px;height:14px;background:var(--go)}
 @media(max-width:820px){.mz-controls{grid-template-columns:repeat(2,1fr)}.mz-kpis{grid-template-columns:repeat(2,1fr)}.mz-charts{grid-template-columns:1fr}.ctrl{border-right:none;border-bottom:1px solid var(--line)}}
+.ann-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0}
+.ann-box{padding:16px 18px}
+.ann-h{font-family:Georgia,serif;font-size:15px;color:var(--dg);margin-bottom:2px}
+.ann-sub{font-size:11px;color:var(--grey);margin-bottom:8px}
+.ann-box .mz-table td{text-align:right;color:var(--ink);font-weight:400}
+.ann-box .mz-table td:first-child{text-align:left}
+.ann-box .mz-table td:last-child{font-weight:700;color:var(--dg)}
+@media(max-width:820px){.ann-grid{grid-template-columns:1fr}}
 </style>
 
 <div class="mz-wrap">
@@ -110,6 +118,13 @@ input[type=range].linked::-webkit-slider-thumb{background:var(--gr)}
     <div class="chart-box full" style="margin:4px 0 0"><h3>單店成熟期月度損益結構</h3><div class="ch-sub">營收 → 各項成本 → 店層 EBITDA　(NT$)</div><div id="chartPL"></div></div>
 
     <div class="insight"><h3>資深顧問評註 · 機構投資人視角（依當前參數即時更新）</h3><ul id="insights"></ul></div>
+
+    <div class="secttl">三年年度報表 × 特別股股東分紅</div>
+    <div class="ann-grid">
+      <div class="mz-card ann-box"><div class="ann-h">三年年度損益表</div><div class="ann-sub">營收 Y2 / Y3 各 +20% 成長　(NT$)</div><table class="mz-table" id="annPL"></table></div>
+      <div class="mz-card ann-box"><div class="ann-h">特別股股東分紅排程</div><div class="ann-sub">投資人(特別股)直接分得當年稅後淨利之 70% / 50% / 30%</div><table class="mz-table" id="annDiv"></table></div>
+    </div>
+    <div class="insight" id="annROI" style="border-left-color:#14463B"></div>
 
     <div class="secttl">關鍵指標彙整</div>
     <table class="mz-table"><tbody id="sumtable"></tbody></table>
@@ -215,6 +230,22 @@ function plChart(r){
 
 function kpi(label,val,sub,cls,gold){return '<div class="kpi'+(gold?' gold':'')+'"><div class="kl">'+label+'</div><div class="kv'+(cls?' '+cls:'')+'">'+val+'</div><div class="ks">'+sub+'</div></div>';}
 
+function annual(p){
+  var M=p.beds*p.days*5*p.util*2800;
+  var persFix=90000+30000*p.beds, depYr=(p.fitout+300000*p.beds+(600000+75000*p.beds)*0.8)/5;
+  var fixedNext=(p.rent+persFix+100000)*12;
+  var A=[10*M,12*M,14.4*M], pay=[0.7,0.5,0.3];
+  function pl(a,y1){var cons=a*0.055,pers=persFix*12+320*(a/2800),mkt=1200000+(y1?600000:0),rt=p.rent*12,oth=a*0.035+59000*12;var eb=a-cons-pers-mkt-rt-oth,ebit=eb-depYr,tax=Math.max(0,ebit)*0.2,ni=ebit-tax;return{a:a,eb:eb,ebpct:(a>0?eb/a:0),dep:depYr,ni:ni};}
+  var yr=[pl(A[0],true),pl(A[1],false),pl(A[2],false)];
+  var div=yr.map(function(y,i){return Math.max(0,y.ni)*pay[i];});
+  var cum=div[0]+div[1]+div[2];
+  var equity=p.raise/(12000000+p.raise), post=12000000+p.raise;
+  var exitEV=yr[2].eb*p.exit, exitInv=Math.max(p.raise, equity*Math.max(0,exitEV));
+  var cf=[-p.raise,div[0],div[1],div[2]+exitInv];
+  function npv(r){var s=0;for(var i=0;i<cf.length;i++)s+=cf[i]/Math.pow(1+r,i);return s;}
+  var lo=-0.9,hi=5;for(var i=0;i<300;i++){var m=(lo+hi)/2;if(npv(m)>0)lo=m;else hi=m;}var irr=(lo+hi)/2;
+  return {yr:yr,div:div,cum:cum,equity:equity,post:post,exitEV:exitEV,exitInv:exitInv,moic:(cum+exitInv)/p.raise,irr:irr,fixedNext:fixedNext,valnGrow:(post>0?exitEV/post:0)};
+}
 function update(){
   var p=getP();
   $("v_rent").textContent=(p.rent/10000).toFixed(1); $("v_fit").textContent=Math.round(p.fitout/10000);
@@ -275,6 +306,21 @@ function update(){
     ["成熟年現金殖利率",(r.yld*100).toFixed(1)+"%"]];
   $("sumtable").innerHTML=rows.map(function(x){return "<tr><td>"+x[0]+"</td><td>"+x[1]+"</td></tr>";}).join("");
   $("footnote").innerHTML="模型基礎：以產能（美容床 × 開店天數 × 每床每日5堂 × 滿載率 × 客單2,800元）動態推導營收，沿用 MAUREL 審視後驗證之成本結構（耗材5.5%、人事含獎酬勞健保、其他含刷卡費）；權責認列、預收款列合約負債。投資條款：投前估值固定 1,200 萬，投資人持股＝募資/(1,200萬+募資)，8%累積優先股息、1x 非參與清算優先權、階梯分紅；退出價值取『清算優先權』與『成熟EBITDA×退出倍數×持股』之較高者。本報告為動態試算工具，僅供投資溝通參考，不構成投資建議。";
+  var an=annual(p); var wn=function(x){return (x/10000).toFixed(0);};
+  var plr=[['營收',function(y){return nt(y.a);}],['店層 EBITDA',function(y){return nt(y.eb);}],['EBITDA 率',function(y){return (y.a>0?(y.ebpct*100).toFixed(1)+'%':'—');}],['折舊',function(y){return nt(-y.dep);}],['稅後淨利',function(y){return nt(y.ni);}]];
+  var ph='<tr><th>年度 (NT$)</th><th>Y1 開業</th><th>Y2 (+20%)</th><th>Y3 (+20%)</th></tr>';
+  plr.forEach(function(row){ph+='<tr><td>'+row[0]+'</td><td>'+row[1](an.yr[0])+'</td><td>'+row[1](an.yr[1])+'</td><td>'+row[1](an.yr[2])+'</td></tr>';});
+  $("annPL").innerHTML=ph;
+  var dh='<tr><th>項目 (NT$)</th><th>Y1</th><th>Y2</th><th>Y3</th></tr>';
+  dh+='<tr><td>稅後淨利（可分配）</td><td>'+nt(an.yr[0].ni)+'</td><td>'+nt(an.yr[1].ni)+'</td><td>'+nt(an.yr[2].ni)+'</td></tr>';
+  dh+='<tr><td>特別股分潤率</td><td>70%</td><td>50%</td><td>30%</td></tr>';
+  dh+='<tr><td>投資人特別股分紅</td><td>'+nt(an.div[0])+'</td><td>'+nt(an.div[1])+'</td><td>'+nt(an.div[2])+'</td></tr>';
+  $("annDiv").innerHTML=dh;
+  $("annROI").innerHTML='<h3>三年投資人回報（特別股分紅 ＋ 第3年退出）</h3><ul>'
+    +'<li class="ok"><b>特別股分紅</b>：持股 '+(an.equity*100).toFixed(1)+'%，直接分得當年稅後淨利之 70%／50%／30%；三年累計分紅 <b>'+wn(an.cum)+' 萬</b>（其餘保留並於帳上維持次年固定營運費用緩衝約 '+wn(an.fixedNext)+' 萬）。</li>'
+    +'<li class="ok"><b>預計股權價值（退出）</b>：第3年股權價值 ＝ 第3年店層EBITDA '+wn(an.yr[2].eb)+'萬 × 退出 '+p.exit+'× ＝ <b>'+(an.exitEV>0?wn(an.exitEV)+' 萬':'—')+'</b>（較投後 '+wn(an.post)+'萬 成長 <b>'+(an.valnGrow>0?an.valnGrow.toFixed(2)+'×':'—')+'</b>）；投資人退出 '+wn(an.exitInv)+' 萬（取 1x 清算優先 與 按持股換股 較高者）。</li>'
+    +'<li class="'+(an.moic>=2?'ok':(an.moic<1.3?'bad':'warn'))+'"><b>三年投資報酬率</b>：累計分紅 '+wn(an.cum)+'萬 ＋ 退出 '+wn(an.exitInv)+'萬 ＝ '+wn(an.cum+an.exitInv)+'萬 → <b>MOIC '+an.moic.toFixed(2)+'×</b>、<b>IRR(3年) '+(an.irr*100).toFixed(1)+'%</b>。</li>'
+    +'<li class="warn"><b>口徑說明</b>：單店年淨利小於一整年固定營運費用（約 '+wn(an.fixedNext)+' 萬），若每年先扣整年固定費用再分潤會使分紅歸零；故採「帳上維持次年費用緩衝、就稅後淨利按 70/50/30 分潤」之務實口徑（可改為更保守扣除式）。</li></ul>';
 }
 window.__mzUpdate=update;
 update();
