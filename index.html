@@ -167,7 +167,7 @@ function setMode(m){curMode=m;curExit=modes[m].exit;$("days").value=modes[m].day
   document.querySelectorAll(".mode-btn").forEach(function(b){b.classList.toggle("active",b.dataset.mode===m);});
   update();}
 function manual(){curMode="自訂";document.querySelectorAll(".mode-btn").forEach(function(b){b.classList.remove("active");});}
-window.setMode=setMode; window.manual=manual;
+window.setMode=setMode; window.manual=manual; window.update=update;
 
 function lineChart(series,payback,troughM){
   var W=540,H=250,pl=44,pr=14,pt=14,pb=26, n=series.length;
