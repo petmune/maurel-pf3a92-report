@@ -1,206 +1,220 @@
 <!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>MAUREL 三情境投資評估 · 以實店數據校準</title>
+<title>MAUREL 三情境互動投資評估 · 以實店數據校準</title>
 <style>
 :root{--dg:#14463B;--gr:#1F6F5C;--go:#B8965A;--cream:#F4EEE2;--lg:#E3EDE9;--ink:#20262B;--grey:#6B6B6B;--red:#A23B36;--bg:#FAFAF8;--line:#E4E0D5}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
 .wrap{max-width:1180px;margin:0 auto;padding-bottom:40px}
 .head{background:var(--dg);color:#fff;padding:22px 30px;border-bottom:4px solid var(--go);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px}
-.head h1{font-family:Georgia,serif;font-size:23px;font-weight:700}
+.head h1{font-family:Georgia,serif;font-size:22px;font-weight:700}
 .head .sub{font-size:12.5px;color:#CBD8D2;margin-top:5px}
 .head .conf{font-size:11px;color:#9FB3AC;text-align:right}
-.sec{padding:0 30px}
-.secttl{font-family:Georgia,serif;font-size:18px;color:var(--dg);margin:26px 0 8px;display:flex;align-items:center;gap:9px}
-.secttl::before{content:"";width:15px;height:15px;background:var(--go)}
-.bench{background:var(--cream);border:1px solid var(--go);border-radius:6px;padding:18px 22px;margin:6px 0}
-.bench h3{font-family:Georgia,serif;font-size:16px;color:var(--dg);margin-bottom:8px}
-.bench .row{display:flex;gap:30px;flex-wrap:wrap;margin:10px 0}
-.bench .stat{display:flex;flex-direction:column}
-.bench .stat b{font-family:Georgia,serif;font-size:26px;color:var(--dg);line-height:1.1}
-.bench .stat span{font-size:11.5px;color:var(--grey)}
-.bench p{font-size:12.5px;color:var(--ink);margin-top:6px}
-.bench .warn{color:var(--red);font-weight:600}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0}
-.card{background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.card .ch{padding:12px 18px;color:#fff;display:flex;justify-content:space-between;align-items:center}
-.card.c1 .ch{background:var(--gr)} .card.c2 .ch{background:var(--dg)} .card.c3 .ch{background:var(--go)}
-.card .ch .nm{font-family:Georgia,serif;font-size:18px;font-weight:700}
-.card .ch .bdg{font-size:10px;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:9px}
-.card .big{text-align:center;padding:16px 10px 6px}
-.card .big .v{font-family:Georgia,serif;font-size:34px;font-weight:700;color:var(--dg)}
-.card .big .l{font-size:11px;color:var(--grey)}
-.card .pb{text-align:center;font-size:12px;padding:0 10px 10px}
-.card .pb b{color:var(--dg)} .card .pb .up{color:var(--gr);font-weight:700} .card .pb .dn{color:var(--gr);font-weight:700}
-.card table{width:100%;border-collapse:collapse;font-size:12.5px}
-.card td{padding:7px 16px;border-top:1px solid var(--line)}
-.card td:last-child{text-align:right;font-weight:700;color:var(--dg);font-family:Georgia,serif}
-.card tr.em td{background:var(--lg)}
-.barbox{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px 22px;margin:6px 0}
-.barbox h3{font-family:Georgia,serif;font-size:15px;color:var(--dg);margin-bottom:4px}
-.barbox .cap{font-size:11.5px;color:var(--grey);margin-bottom:14px}
-.bar{display:flex;align-items:center;gap:10px;margin:9px 0}
-.bar .blab{width:80px;font-size:12.5px;color:var(--ink);font-weight:600}
-.bar .btrack{flex:1;position:relative;height:26px;background:#F2EFE6;border-radius:4px}
-.bar .bfill{position:absolute;left:0;top:0;bottom:0;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-size:11.5px;font-weight:700}
-.peakline{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--red)}
-.peaklab{position:absolute;top:-20px;font-size:10.5px;color:var(--red);font-weight:700;transform:translateX(-50%)}
-.rec{background:var(--lg);border-left:5px solid var(--gr);border-radius:4px;padding:18px 22px;margin:6px 0}
-.rec h3{font-family:Georgia,serif;font-size:16px;color:var(--dg);margin-bottom:8px}
-.rec ul{list-style:none} .rec li{font-size:13px;margin:8px 0;padding-left:20px;position:relative}
-.rec li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:2px;background:var(--gr)}
-.rec li.star::before{background:var(--go);width:9px;height:9px} .rec li b{color:var(--dg)}
-.levers{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:6px 0}
-.lev{background:#fff;border:1px solid var(--line);border-radius:5px;padding:14px 16px}
-.lev h4{font-size:13px;color:var(--dg);margin-bottom:5px} .lev p{font-size:12px;color:var(--grey)}
-.calib{background:#FBF3F0;border:1px solid #E3C4BD;border-radius:6px;padding:16px 20px;margin:6px 0;font-size:12.5px}
-.calib b{color:var(--red)}
-.inter{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px 22px;margin:6px 0}
-.inter .presets{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
-.pbtn{font-family:Georgia,serif;font-size:14px;font-weight:700;padding:8px 20px;border:1.5px solid var(--dg);background:#fff;color:var(--dg);border-radius:3px;cursor:pointer}
+.sticky{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:2px solid var(--go);display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 30px;box-shadow:0 3px 12px rgba(0,0,0,.08);flex-wrap:wrap}
+.sticky .pl{display:flex;gap:8px;align-items:center}
+.sticky .lbl{font-size:12px;color:var(--grey);font-weight:600}
+.pbtn{font-family:Georgia,serif;font-size:13px;font-weight:700;padding:6px 16px;border:1.5px solid var(--dg);background:#fff;color:var(--dg);border-radius:3px;cursor:pointer}
 .pbtn:hover{background:var(--lg)} .pbtn.active{background:var(--dg);color:#fff} .pbtn.active.g{background:var(--go);border-color:var(--go);color:var(--dg)}
-.ctrls{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:6px 0 16px}
-.ctrl .cl{font-size:12px;color:var(--grey);font-weight:600;display:flex;justify-content:space-between}
-.ctrl .cv{font-family:Georgia,serif;font-size:20px;font-weight:700;color:var(--dg);margin:3px 0 6px}
-.ctrl .cv small{font-size:12px;color:var(--grey);font-weight:400}
+.skpis{display:flex;gap:18px} .sk{display:flex;flex-direction:column;text-align:right;line-height:1.15} .sk span{font-size:10px;color:var(--grey)} .sk b{font-family:Georgia,serif;font-size:16px;color:var(--dg)} .sk b.warn{color:var(--red)} .sk b.ok{color:var(--gr)}
+@media(max-width:900px){.skpis{display:none}}
+.sec{padding:0 30px}
+.secttl{font-family:Georgia,serif;font-size:18px;color:var(--dg);margin:24px 0 8px;display:flex;align-items:center;gap:9px}
+.secttl::before{content:"";width:15px;height:15px;background:var(--go)}
+.bench{background:var(--cream);border:1px solid var(--go);border-radius:6px;padding:16px 22px;margin:6px 0}
+.bench h3{font-family:Georgia,serif;font-size:15px;color:var(--dg);margin-bottom:8px}
+.bench .row{display:flex;gap:28px;flex-wrap:wrap;margin:8px 0}
+.bench .stat b{font-family:Georgia,serif;font-size:24px;color:var(--dg);display:block;line-height:1.1}
+.bench .stat span{font-size:11px;color:var(--grey)}
+.bench p{font-size:12px;margin-top:6px}.bench .warn{color:var(--red);font-weight:600}
+.calib2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0}
+.gauge{background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px 18px}
+.gauge .gt{font-size:12.5px;color:var(--grey);font-weight:600;margin-bottom:8px}
+.gauge .gv{font-family:Georgia,serif;font-size:28px;font-weight:700;color:var(--dg)}
+.gauge .gv .vs{font-size:14px;font-weight:700;margin-left:8px}
+.gtrack{position:relative;height:14px;background:#F2EFE6;border-radius:7px;margin-top:10px}
+.gfill{position:absolute;left:0;top:0;bottom:0;border-radius:7px}
+.gpeak{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--red)}
+.gpeak .pl2{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:9.5px;color:var(--red);font-weight:700;white-space:nowrap}
+.ctrlpanel{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px 22px;margin:6px 0}
+.ctrls{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.ctrl{padding:12px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ctrl .cl{font-size:12px;color:var(--grey);font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.ctrl .cl .tag{font-size:9px;background:var(--lg);color:var(--gr);padding:1px 6px;border-radius:8px;font-weight:700}
+.ctrl .cl .tag.c{background:#FBE9E7;color:#A23B36} .ctrl .cl .tag.f{background:#EFE6D2;color:#8a6d2f}
+.ctrl .cv{font-family:Georgia,serif;font-size:19px;font-weight:700;color:var(--dg);margin:4px 0 7px}
+.ctrl .cv small{font-size:11px;color:var(--grey);font-weight:400}
 input[type=range]{width:100%;height:4px;-webkit-appearance:none;background:var(--line);border-radius:3px;outline:none}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--go);cursor:pointer;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.ikpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.ik{background:var(--bg);border:1px solid var(--line);border-top:3px solid var(--gr);border-radius:5px;padding:12px 14px}
-.ik .l{font-size:11px;color:var(--grey)} .ik .v{font-family:Georgia,serif;font-size:22px;font-weight:700;color:var(--dg);margin-top:2px} .ik .s{font-size:10.5px;color:var(--grey)}
+input[type=range].anchor::-webkit-slider-thumb{background:var(--gr)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0 0}
+.kpi{background:var(--bg);border:1px solid var(--line);border-top:3px solid var(--gr);border-radius:5px;padding:12px 15px}
+.kpi.gold{border-top-color:var(--go)}
+.kpi .l{font-size:11.5px;color:var(--grey)} .kpi .v{font-family:Georgia,serif;font-size:25px;font-weight:700;color:var(--dg);margin-top:2px;line-height:1.1} .kpi .s{font-size:10.5px;color:var(--grey);margin-top:2px}
+.kpi .v.warn{color:var(--red)} .kpi .v.ok{color:var(--gr)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.card .ch{padding:11px 18px;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.card.c1 .ch{background:var(--gr)} .card.c2 .ch{background:var(--dg)} .card.c3 .ch{background:var(--go)}
+.card .ch .nm{font-family:Georgia,serif;font-size:17px;font-weight:700}
+.card .ch .bdg{font-size:10px;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:9px}
+.card .big{text-align:center;padding:14px 10px 4px}
+.card .big .v{font-family:Georgia,serif;font-size:32px;font-weight:700;color:var(--dg)}
+.card .big .l{font-size:11px;color:var(--grey)}
+.card .pb{text-align:center;font-size:12px;padding:0 10px 10px}.card .pb b{color:var(--dg)}.card .pb .u{color:var(--gr);font-weight:700}
+.card table{width:100%;border-collapse:collapse;font-size:12.5px}
+.card td{padding:6px 16px;border-top:1px solid var(--line)} .card td:last-child{text-align:right;font-weight:700;color:var(--dg);font-family:Georgia,serif} .card tr.em td{background:var(--lg)}
+.rec{background:var(--lg);border-left:5px solid var(--gr);border-radius:4px;padding:18px 22px;margin:6px 0}
+.rec h3{font-family:Georgia,serif;font-size:16px;color:var(--dg);margin-bottom:8px}
+.rec ul{list-style:none}.rec li{font-size:13px;margin:8px 0;padding-left:20px;position:relative}.rec li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:2px;background:var(--gr)}.rec li.star::before{background:var(--go);width:9px;height:9px}.rec li b{color:var(--dg)}
+.calib{background:#FBF3F0;border:1px solid #E3C4BD;border-radius:6px;padding:14px 20px;margin:6px 0;font-size:12.5px}.calib b{color:var(--red)}
 .foot{font-size:10.5px;color:var(--grey);padding:18px 30px 0;border-top:1px solid var(--line);margin-top:22px;line-height:1.6}
-.navlink{display:inline-block;margin-top:8px;font-size:12px;color:var(--gr)}
-@media(max-width:820px){.cards{grid-template-columns:1fr}.ctrls{grid-template-columns:1fr}.ikpis{grid-template-columns:repeat(2,1fr)}.levers{grid-template-columns:1fr}}
+@media(max-width:820px){.ctrls{grid-template-columns:repeat(2,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.calib2{grid-template-columns:1fr}}
 </style></head>
 <body>
 <div class="wrap">
   <div class="head">
-    <div><h1>MAUREL 三情境投資評估 — 以實店數據校準</h1>
-    <div class="sub">以表妹一店實績為錨點，校準保守／目標／理想三情境，供投資人參考</div></div>
-    <div class="conf">機密文件<br>Strictly Private &amp; Confidential<br>2026 · 三情境校準版</div>
+    <div><h1>MAUREL 三情境互動投資評估 — 以實店數據校準</h1>
+    <div class="sub">所有關鍵指標皆可拖動；即時對標表妹店真實峰值（每床 24 萬 / 每床每日 3.3 堂）</div></div>
+    <div class="conf">機密文件<br>Strictly Private &amp; Confidential<br>2026 · 互動校準版 v2</div>
+  </div>
+  <div class="sticky">
+    <div class="pl"><span class="lbl">情境</span>
+      <button class="pbtn" id="b保守" onclick="preset('保守')">保守</button>
+      <button class="pbtn active" id="b目標" onclick="preset('目標')">目標</button>
+      <button class="pbtn g" id="b理想" onclick="preset('理想')">理想</button>
+    </div>
+    <div class="skpis" id="skpis"></div>
   </div>
   <div class="sec">
 
-    <div class="secttl">一、真實市場驗證（最可靠錨點）</div>
+    <div class="secttl">一、真實市場驗證（最可靠錨點 · 表妹一店）</div>
     <div class="bench">
       <h3>表妹一店實績（同業態 · 已營運 3 年）</h3>
       <div class="row">
         <div class="stat"><b>5 床</b><span>美容床數（4 位美容師）</span></div>
         <div class="stat"><b>120 萬</b><span>歷史最高單月營收</span></div>
         <div class="stat"><b>24 萬</b><span>每床月產值（峰值）</span></div>
-        <div class="stat"><b>30 萬</b><span>每位美容師月產值（峰值）</span></div>
+        <div class="stat"><b>~3.3 堂</b><span>每床每日堂數（峰值推估）</span></div>
         <div class="stat"><b>~1 次/月</b><span>客戶回店頻率</span></div>
       </div>
-      <p><span class="warn">關鍵提醒：</span>120 萬為「<b>單月峰值</b>」而非長期平均（峰值通常為長期均值的 1.2–1.4 倍，推估長期均值約 85–100 萬／每床約 17–20 萬）；且該店<b>幾乎無產品銷售</b>。本案所有情境皆以「每床月產值」對比此真實峰值 24 萬，作為可信度標尺。</p>
+      <p><span class="warn">關鍵提醒：</span>120 萬為「<b>單月峰值</b>」非長期平均（推估均值約 85–100 萬／每床 17–20 萬）；幾乎無產品銷售。下方互動工具中，<b>每床產值與每床每日堂數</b>會即時與此真實峰值對比，超過＝需靠價值槓桿達成。</p>
     </div>
 
-    <div class="secttl">二、三情境並排比較（新店 6 床 · 東區 · 月租 19 萬）</div>
-    <div class="cards" id="cards"></div>
-
-    <div class="secttl">三、每床月產值 vs 表妹店峰值（紅線＝24 萬/床）</div>
-    <div class="barbox"><h3>各情境每床產值相對「已驗證峰值」的位置</h3>
-      <div class="cap">紅線為表妹店歷史峰值 24 萬/床。低於紅線＝比已驗證最佳水準更保守；高於紅線＝需靠價值槓桿超越其最佳月。</div>
-      <div id="bars"></div>
-    </div>
-
-    <div class="secttl">四、顧問建議：簡報主版本怎麼選</div>
-    <div class="rec"><h3>資深顧問建議（投資簡報定版策略）</h3>
-      <ul>
-        <li class="star"><b>Y1 財測主版本 → 保守版（月營收 110 萬）。</b>每床產值 18.3 萬，<b>比表妹店峰值低 24%</b>，更接近其長期平均——這是唯一被真實數據完全驗證、盡調挑戰下仍站得住的水準。以保守版定錨可信度，是贏得專業投資人與良好條款的關鍵。</li>
-        <li><b>成熟期（Y2–Y3）目標 → 目標版（月營收 150–180 萬，採 165 萬）。</b>每床產值 27.5 萬，較表妹峰值高 15%；須<b>落實四項價值槓桿</b>（東區客單、會員制、私密處護理、加購）後達成，作為成長故事與上行空間。</li>
-        <li><b>天花板／上行 → 理想版（月營收 180–200 萬，採 195 萬）。</b>每床 32.5 萬、較峰值高 35%，列為近滿載之天花板情境，不宜作為 Y1 預設。</li>
-        <li><b>為何不以「6床×30天×80%滿載＝720堂×201萬」為主：</b>80% 滿載＝每床每日 4 堂，<b>已超過表妹店峰值的每床每日約 3.3 堂</b>（120萬÷5床÷26天÷客單2,800 推估）；屬天花板假設，作為 Y1 主版本將被盡調直接質疑。</li>
-      </ul>
-    </div>
-
-    <div class="secttl">五、各情境達成條件（價值槓桿）</div>
-    <div class="levers">
-      <div class="lev"><h4>① 東區客單價提升</h4><p>東區商圈定位與客群消費力較高，客單與升單空間優於現有店；支撐每床產值由 18 萬向 25–30 萬靠攏。</p></div>
-      <div class="lev"><h4>② 會員制（儲值＋回訪）</h4><p>將「約每月 1 次」回店頻率制度化、提高回購與預收現金流；是由保守邁向目標版的核心引擎。</p></div>
-      <div class="lev"><h4>③ 私密處護理等高單價項目</h4><p>導入高單價療程提高客單與貢獻毛利，直接拉升每床產值；為目標／理想版的主要增量來源。</p></div>
-      <div class="lev"><h4>④ 加購 × 提升 LTV</h4><p>以階梯式加購與套餐設計提高客戶終身價值，攤平獲客成本、強化單店現金流韌性。</p></div>
-    </div>
-
-    <div class="secttl">六、互動敏感度（以「每床月產值」為真實驅動）</div>
-    <div class="inter">
-      <div class="presets"><span style="font-size:12px;color:var(--grey);font-weight:600">情境預設</span>
-        <button class="pbtn" id="p1" onclick="preset(183000)">保守 18.3萬</button>
-        <button class="pbtn active" id="p2" onclick="preset(275000)">目標 27.5萬</button>
-        <button class="pbtn g" id="p3" onclick="preset(325000)">理想 32.5萬</button>
-      </div>
+    <div class="secttl">二、互動試算（拖動任一指標，即時連動）</div>
+    <div class="ctrlpanel">
       <div class="ctrls">
-        <div class="ctrl"><div class="cl"><span>每床月產值</span><span style="color:var(--red)">表妹峰值 24 萬</span></div>
-          <div class="cv"><span id="vpb">27.5</span><small> 萬/床</small></div>
-          <input type="range" id="perbed" min="120000" max="360000" step="1000" value="275000" oninput="manual();calc()"></div>
-        <div class="ctrl"><div class="cl"><span>美容床數</span><span>表妹店 5 床</span></div>
-          <div class="cv"><span id="vbeds">6</span><small> 床</small></div>
-          <input type="range" id="beds" min="3" max="9" step="1" value="6" oninput="manual();calc()"></div>
+        <div class="ctrl"><div class="cl">客單價 <span class="tag">營收</span></div><div class="cv">NT$<span id="v_ticket">3200</span></div><input type="range" id="ticket" min="2000" max="5000" step="50" value="3200" oninput="manual();calc()"></div>
+        <div class="ctrl"><div class="cl">每床每日堂數 <span class="tag">營收·錨點</span></div><div class="cv"><span id="v_sess">3.3</span><small> 堂</small></div><input type="range" id="sess" class="anchor" min="1.5" max="4.5" step="0.1" value="3.3" oninput="manual();calc()"></div>
+        <div class="ctrl"><div class="cl">美容床數 <span class="tag">產能</span></div><div class="cv"><span id="v_beds">6</span><small> 床</small></div><input type="range" id="beds" min="3" max="9" step="1" value="6" oninput="manual();calc()"></div>
+        <div class="ctrl"><div class="cl">開店天數 <span class="tag">產能</span></div><div class="cv"><span id="v_days">26</span><small> 天/月</small></div><input type="range" id="days" min="20" max="31" step="1" value="26" oninput="manual();calc()"></div>
+        <div class="ctrl"><div class="cl">月租金 <span class="tag c">成本</span></div><div class="cv">NT$<span id="v_rent">19.0</span><small> 萬</small></div><input type="range" id="rent" min="100000" max="320000" step="5000" value="190000" oninput="calc()"></div>
+        <div class="ctrl"><div class="cl">募資金額 <span class="tag f">財務</span></div><div class="cv">NT$<span id="v_raise">600</span><small> 萬</small></div><input type="range" id="raise" min="4000000" max="15000000" step="100000" value="6000000" oninput="calc()"></div>
+        <div class="ctrl"><div class="cl">退出倍數 <span class="tag f">財務</span></div><div class="cv"><span id="v_exit">5.0</span><small>× EBITDA</small></div><input type="range" id="exit" min="3" max="8" step="0.5" value="5" oninput="calc()"></div>
+        <div class="ctrl" style="display:flex;align-items:center;justify-content:center"><button class="pbtn" style="font-size:12px" onclick="reset()">重設為目標版</button></div>
       </div>
-      <div class="ikpis" id="ikpis"></div>
+      <div class="calib2" style="margin-top:16px">
+        <div class="gauge"><div class="gt">每床月產值　vs　表妹店峰值 24 萬</div><div class="gv"><span id="g_pb">27.5</span> 萬<span class="vs" id="g_pbvs"></span></div><div class="gtrack" id="g_pbtrack"></div></div>
+        <div class="gauge"><div class="gt">每床每日堂數　vs　表妹店峰值 3.3 堂</div><div class="gv"><span id="g_se">3.3</span> 堂<span class="vs" id="g_sevs"></span></div><div class="gtrack" id="g_setrack"></div></div>
+      </div>
+      <div class="kpis" id="kpis"></div>
       <div style="font-size:11.5px;color:var(--grey);margin-top:12px" id="inote"></div>
     </div>
 
-    <div class="secttl">七、口徑校準說明</div>
-    <div class="calib">
-      <b>本案修正：以「每床月產值」取代「滿載率×每床每日堂數」作為主驅動。</b>原模型「每床每日 5 堂 × 滿載率」在滿載率拉高時（80%＝每床每日 4 堂）會超過表妹店實際峰值（每床每日約 3.3 堂），導致營收高估。改以「每床月產值（萬/床）」直接對標已驗證的 24 萬/床峰值，更貼近真實市場、且盡調可驗證。
-    </div>
+    <div class="secttl">三、三情境並排比較（新店 6 床 · 東區 · 月租 19 萬 · 募資 600 萬）</div>
+    <div class="cards" id="cards"></div>
+
+    <div class="secttl">四、顧問建議：簡報主版本怎麼選</div>
+    <div class="rec"><h3>資深顧問建議（投資簡報定版策略）</h3><ul>
+      <li class="star"><b>Y1 財測主版本 → 保守版（月營收約 110 萬）。</b>每床 18.2 萬、每床每日 2.5 堂，<b>皆低於表妹店已驗證峰值</b>，盡調挑戰下最站得住；以此定錨可信度。</li>
+      <li><b>成熟期 Y2–Y3 目標 → 目標版（165 萬）。</b>每床 27.5 萬、每床每日 3.3 堂（＝表妹峰值堂數）＋東區客單 3,200；須落實會員制、私密處護理、加購等價值槓桿。</li>
+      <li><b>天花板 → 理想版（197 萬）。</b>每床 32.8 萬、3.6 堂、客單 3,500，列為上行情境，不宜作 Y1 預設。</li>
+      <li><b>請投資人自行拖動上方滑桿驗證：</b>任何「每床產值 > 24 萬」或「每床每日堂數 > 3.3」的設定，都已超過這家真實店的歷史最佳月，工具會即時以紅字提示。</li>
+    </ul></div>
+
+    <div class="secttl">五、口徑校準說明</div>
+    <div class="calib"><b>本版以「客單價 × 每床每日堂數」為營收驅動，並雙重對標真實峰值（每床 24 萬、每床每日 3.3 堂）。</b>原模型「滿載率 80%＝每床每日 4 堂」已超過表妹店實際峰值的 3.3 堂；本工具讓投資人直接調整堂數與客單，超過真實峰值即紅字示警，避免營收高估、且盡調可驗證。表妹店客單未知，3.3 堂以客單 2,800 推估（120萬÷5床÷26天÷2,800）。</div>
   </div>
   <div class="foot" id="foot"></div>
 </div>
 <script>
 (function(){
-var BENCH=240000, RENT=190000, build=5670000, raise=6000000, PRE=12000000, equity=raise/(PRE+raise);
-var depYr=(1800000+1200000+900000*0.8)/5, MAINT=20000, TAX=0.20;
-function pnl(rev){var consum=rev*0.055,pers=Math.max(330000,rev*0.31),mkt=Math.max(100000,rev*0.07),other=rev*0.07+40000;var eb=rev-consum-pers-mkt-RENT-other;return{rev:rev,consum:consum,pers:pers,mkt:mkt,other:other,eb:eb,ebpct:eb/rev,ann:eb*12};}
-function ret5(matRev){var ramp=[.3,.45,.6,.75,.9,1],R=function(m){return m<6?ramp[m]:1;};var matYr=pnl(matRev).eb*12;var y1=0;for(var m=0;m<12;m++)y1+=pnl(matRev*R(m)).eb;var y1EB=y1-600000,pref=0.08*raise;function ply(y){return y===1?{EB:y1EB,tax:Math.max(0,y1EB-depYr)*TAX}:{EB:matYr,tax:Math.max(0,matYr-depYr)*TAX};}var acc=0,cf=[-raise],divs=0,ev=0;for(var y=1;y<=5;y++){var d=ply(y===1?1:2),av=Math.max(0,(d.EB-d.tax-MAINT*12)*(y===1?.5:1)),due=pref+acc,pp=Math.min(av,due);acc=due-pp;av-=pp;var ivc=pp+av*equity;divs+=ivc;if(y<5)cf.push(ivc);else{ev=Math.max(raise+acc,matYr*5*equity);cf.push(ivc+ev);}}var moic=(divs+ev)/raise;function npv(r){var s=0;for(var i=0;i<cf.length;i++)s+=cf[i]/Math.pow(1+r,i);return s;}var lo=-.9,hi=4;for(var i=0;i<300;i++){var mm=(lo+hi)/2;if(npv(mm)>0)lo=mm;else hi=mm;}return{moic:moic,irr:(lo+hi)/2};}
-function metrics(perbed,beds){var rev=perbed*beds,p=pnl(rev),r=ret5(rev);var payback=(p.eb>MAINT)?build/(p.eb-MAINT):Infinity;return{rev:rev,perbed:perbed,beds:beds,p:p,r:r,payback:payback,vsPeak:perbed/BENCH-1};}
+var PEAK_PB=240000, PEAK_SE=3.3, build=5670000, PRE=12000000, MAINT=20000, TAX=0.20;
+var depYr=(1800000+1200000+900000*0.8)/5;
+var PRESETS={'保守':{ticket:2800,sess:2.5},'目標':{ticket:3200,sess:3.3},'理想':{ticket:3500,sess:3.6}};
+function costs(rev,rent){return{consum:rev*0.055,pers:Math.max(330000,rev*0.31),mkt:Math.max(100000,rev*0.07),rent:rent,other:rev*0.07+40000};}
+function ebOf(rev,rent){var c=costs(rev,rent);return rev-c.consum-c.pers-c.mkt-c.rent-c.other;}
+function model(p){
+  var rev=p.beds*p.days*p.sess*p.ticket, perbed=rev/p.beds, eb=ebOf(rev,p.rent), ebpct=eb/rev, matYr=eb*12;
+  var equity=p.raise/(PRE+p.raise), payback=eb>MAINT?build/(eb-MAINT):Infinity;
+  var ramp=[.3,.45,.6,.75,.9,1],R=function(m){return m<6?ramp[m]:1;};
+  var y1=0;for(var m=0;m<12;m++){y1+=ebOf(rev*R(m),p.rent);}var y1EB=y1-600000;
+  var pref=0.08*p.raise;function ply(y){return y===1?{EB:y1EB,tax:Math.max(0,y1EB-depYr)*TAX}:{EB:matYr,tax:Math.max(0,matYr-depYr)*TAX};}
+  var acc=0,cf=[-p.raise],divs=0,ev=0;
+  for(var y=1;y<=5;y++){var d=ply(y===1?1:2),av=Math.max(0,(d.EB-d.tax-MAINT*12)*(y===1?.5:1)),due=pref+acc,pp=Math.min(av,due);acc=due-pp;av-=pp;var ivc=pp+av*equity;divs+=ivc;if(y<5)cf.push(ivc);else{ev=Math.max(p.raise+acc,matYr*p.exit*equity);cf.push(ivc+ev);}}
+  var moic=(divs+ev)/p.raise;function npv(r){var s=0;for(var i=0;i<cf.length;i++)s+=cf[i]/Math.pow(1+r,i);return s;}
+  var lo=-.9,hi=4;for(var i=0;i<300;i++){var mm=(lo+hi)/2;if(npv(mm)>0)lo=mm;else hi=mm;}var irr=(lo+hi)/2;
+  return{rev:rev,perbed:perbed,eb:eb,ebpct:ebpct,ann:matYr,payback:payback,equity:equity,moic:moic,irr:irr,sess:p.sess};
+}
 function w(x){return Math.round(x/10000);}
-var SC=[{nm:'保守',sub:'Y1 主版本',cls:'c1',bdg:'建議財測主版本',pb:183000},{nm:'目標',sub:'成熟 Y2–Y3',cls:'c2',bdg:'成長目標',pb:275000},{nm:'理想',sub:'天花板',cls:'c3',bdg:'上行情境',pb:325000}];
-// cards
+function getP(){return{ticket:+v('ticket'),sess:+v('sess'),beds:+v('beds'),days:+v('days'),rent:+v('rent'),raise:+v('raise'),exit:+v('exit')};}
+function v(id){return document.getElementById(id).value;}
+function $(id){return document.getElementById(id);}
+// fixed comparison cards from presets
+var SC=[{k:'保守',cls:'c1',bdg:'建議財測主版本'},{k:'目標',cls:'c2',bdg:'成長目標'},{k:'理想',cls:'c3',bdg:'上行情境'}];
 var ch='';
-SC.forEach(function(s){var m=metrics(s.pb,6);var vs=(m.vsPeak*100);
- ch+='<div class="card '+s.cls+'"><div class="ch"><div><div class="nm">'+s.nm+'</div></div><div class="bdg">'+s.bdg+'</div></div>'
-  +'<div class="big"><div class="v">'+w(m.rev)+'<span style="font-size:16px"> 萬</span></div><div class="l">成熟期月營收 · '+s.sub+'</div></div>'
-  +'<div class="pb">每床 <b>'+(s.pb/10000).toFixed(1)+' 萬</b> ｜ vs 表妹峰值 <span class="'+(vs>=0?'up':'dn')+'">'+(vs>=0?'+':'')+vs.toFixed(0)+'%</span></div>'
-  +'<table>'
-  +'<tr><td>年營收</td><td>'+w(m.rev*12)+' 萬</td></tr>'
-  +'<tr class="em"><td>店層 EBITDA 率</td><td>'+(m.p.ebpct*100).toFixed(1)+'%</td></tr>'
-  +'<tr><td>年化店層 EBITDA</td><td>'+w(m.p.ann)+' 萬</td></tr>'
+SC.forEach(function(s){var pr=PRESETS[s.k];var m=model({ticket:pr.ticket,sess:pr.sess,beds:6,days:26,rent:190000,raise:6000000,exit:5});var vs=(m.perbed/PEAK_PB-1)*100;
+ ch+='<div class="card '+s.cls+'"><div class="ch"><div class="nm">'+s.k+'</div><div class="bdg">'+s.bdg+'</div></div>'
+  +'<div class="big"><div class="v">'+w(m.rev)+'<span style="font-size:15px"> 萬</span></div><div class="l">成熟期月營收</div></div>'
+  +'<div class="pb">每床 <b>'+(m.perbed/10000).toFixed(1)+'萬</b> ｜ '+pr.sess.toFixed(1)+'堂/床/日 ｜ 客單 '+pr.ticket+' ｜ vs峰值 <span class="u" style="color:'+(vs>=0?'#1F6F5C':'#A23B36')+'">'+(vs>=0?'+':'')+vs.toFixed(0)+'%</span></div>'
+  +'<table><tr><td>年營收</td><td>'+w(m.rev*12)+' 萬</td></tr>'
+  +'<tr class="em"><td>店層 EBITDA 率</td><td>'+(m.ebpct*100).toFixed(1)+'%</td></tr>'
+  +'<tr><td>年化店層 EBITDA</td><td>'+w(m.ann)+' 萬</td></tr>'
   +'<tr><td>成熟基礎回本</td><td>'+m.payback.toFixed(0)+' 月</td></tr>'
-  +'<tr class="em"><td>投資人 5 年 MOIC</td><td>'+m.r.moic.toFixed(2)+'×</td></tr>'
-  +'<tr><td>投資人 5 年 IRR</td><td>'+(m.r.irr*100).toFixed(0)+'%</td></tr>'
-  +'</table></div>';
+  +'<tr class="em"><td>投資人 5 年 MOIC</td><td>'+m.moic.toFixed(2)+'×</td></tr>'
+  +'<tr><td>投資人 5 年 IRR</td><td>'+(m.irr*100).toFixed(0)+'%</td></tr></table></div>';
 });
-document.getElementById('cards').innerHTML=ch;
-// bars (per-bed vs 24萬 peak); scale max 36萬
-var maxPB=360000, peakPct=BENCH/maxPB*100;
-var bh='<div style="position:relative;padding-top:22px">';
-SC.forEach(function(s){var pct=s.pb/maxPB*100;var col=s.cls==='c1'?'#1F6F5C':(s.cls==='c2'?'#14463B':'#B8965A');
- bh+='<div class="bar"><div class="blab">'+s.nm+'</div><div class="btrack"><div class="bfill" style="width:'+pct+'%;background:'+col+'">'+(s.pb/10000).toFixed(1)+'萬</div></div></div>';});
-bh+='<div class="peakline" style="left:calc(80px + 10px + '+peakPct+'% * (100% - 90px)/100); display:none"></div></div>';
-document.getElementById('bars').innerHTML=bh;
-// place peak line precisely using overlay
-(function(){var box=document.getElementById('bars');var track=box.querySelector('.btrack');if(track){var line=document.createElement('div');line.className='peakline';var lab=document.createElement('div');lab.className='peaklab';lab.textContent='表妹峰值 24萬';
- var place=function(){var tr=track.getBoundingClientRect(),bx=box.getBoundingClientRect();var x=(tr.left-bx.left)+tr.width*(BENCH/maxPB);line.style.left=x+'px';lab.style.left=x+'px';lab.style.top='2px';};
- box.style.position='relative';box.appendChild(line);box.appendChild(lab);place();window.addEventListener('resize',place);};})();
-// interactive
+$('cards').innerHTML=ch;
+function gauge(trackId,vsId,val,peak,max){
+ var pct=Math.min(100,val/max*100), peakPct=peak/max*100, over=val>=peak;
+ var col=over?'#A23B36':'#1F6F5C';
+ $(trackId).innerHTML='<div class="gfill" style="width:'+pct+'%;background:'+col+'"></div><div class="gpeak" style="left:'+peakPct+'%"><span class="pl2">峰值</span></div>';
+ var vs=(val/peak-1)*100;
+ $(vsId).innerHTML='<span style="color:'+(vs>=0?'#A23B36':'#1F6F5C')+'">'+(vs>=0?'+':'')+vs.toFixed(0)+'%</span>';
+}
 var cur='目標';
-function preset(pb){document.getElementById('perbed').value=pb;document.querySelectorAll('.pbtn').forEach(function(b){b.classList.remove('active');});var id=pb===183000?'p1':(pb===275000?'p2':'p3');document.getElementById(id).classList.add('active');calc();}
-function manual(){document.querySelectorAll('.pbtn').forEach(function(b){b.classList.remove('active');});}
-window.preset=preset;window.manual=manual;
-function calc(){var pb=+document.getElementById('perbed').value,beds=+document.getElementById('beds').value;
- document.getElementById('vpb').textContent=(pb/10000).toFixed(1);document.getElementById('vbeds').textContent=beds;
- var m=metrics(pb,beds);var vs=m.vsPeak*100;
- var ik=function(l,v,s){return '<div class="ik"><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>';};
- document.getElementById('ikpis').innerHTML=
-   ik('月營收',w(m.rev)+'<small style="font-size:13px"> 萬</small>',beds+'床 × 每床'+(pb/10000).toFixed(1)+'萬')
-  +ik('店層 EBITDA 率',(m.p.ebpct*100).toFixed(1)+'%',w(m.p.ann)+'萬/年')
-  +ik('成熟基礎回本',isFinite(m.payback)?m.payback.toFixed(0)+' 月':'不回本','建店投入 567萬')
-  +ik('投資人 5年 MOIC',m.r.moic.toFixed(2)+'×','IRR '+(m.r.irr*100).toFixed(0)+'% · 釋股33.3%');
- document.getElementById('inote').innerHTML='每床產值 '+(pb/10000).toFixed(1)+' 萬 vs 表妹店峰值 24 萬：<b style="color:'+(vs>=0?'#1F6F5C':'#A23B36')+'">'+(vs>=0?'+':'')+vs.toFixed(0)+'%</b>　'+(vs<0?'（低於已驗證峰值，屬保守可信區間）':(vs<25?'（高於峰值，須靠價值槓桿達成）':'（遠高於峰值，屬天花板情境）'));
+function preset(k){cur=k;var pr=PRESETS[k];$('ticket').value=pr.ticket;$('sess').value=pr.sess;$('beds').value=6;$('days').value=26;$('rent').value=190000;$('raise').value=6000000;$('exit').value=5;
+ ['保守','目標','理想'].forEach(function(x){$('b'+x).classList.toggle('active',x===k);});calc();}
+function manual(){cur='自訂';['保守','目標','理想'].forEach(function(x){$('b'+x).classList.remove('active');});}
+function reset(){preset('目標');}
+window.preset=preset;window.manual=manual;window.reset=reset;
+function calc(){
+ var p=getP();
+ $('v_ticket').textContent=p.ticket;$('v_sess').textContent=p.sess.toFixed(1);$('v_beds').textContent=p.beds;$('v_days').textContent=p.days;
+ $('v_rent').textContent=(p.rent/10000).toFixed(1);$('v_raise').textContent=Math.round(p.raise/10000);$('v_exit').textContent=p.exit.toFixed(1);
+ var m=model(p);
+ $('g_pb').textContent=(m.perbed/10000).toFixed(1);gauge('g_pbtrack','g_pbvs',m.perbed,PEAK_PB,400000);
+ $('g_se').textContent=p.sess.toFixed(1);gauge('g_setrack','g_sevs',p.sess,PEAK_SE,4.5);
+ var kpi=function(l,vv,s,cls,gold){return '<div class="kpi'+(gold?' gold':'')+'"><div class="l">'+l+'</div><div class="v'+(cls?' '+cls:'')+'">'+vv+'</div><div class="s">'+s+'</div></div>';};
+ $('kpis').innerHTML=
+   kpi('月營收',w(m.rev)+'<small style="font-size:13px"> 萬</small>',p.beds+'床 × '+p.days+'天 × '+p.sess.toFixed(1)+'堂 × '+p.ticket)
+  +kpi('店層 EBITDA 率',(m.ebpct*100).toFixed(1)+'%',w(m.ann)+'萬/年',m.ebpct<0.15?'warn':(m.ebpct>0.30?'ok':''))
+  +kpi('成熟基礎回本',isFinite(m.payback)?m.payback.toFixed(0)+' 月':'不回本','建店投入 567萬',(!isFinite(m.payback)||m.payback>36)?'warn':(m.payback<18?'ok':''))
+  +kpi('投資人 5年 MOIC',m.moic.toFixed(2)+'×','退出 '+p.exit.toFixed(1)+'×',m.moic<1.3?'warn':(m.moic>2.5?'ok':''),true)
+  +kpi('投資人 5年 IRR',(m.irr*100).toFixed(0)+'%','釋股 '+(m.equity*100).toFixed(1)+'%',null,true)
+  +kpi('年營收',w(m.rev*12)+'<small style="font-size:13px"> 萬</small>','',null,true)
+  +kpi('每床月產值',(m.perbed/10000).toFixed(1)+'<small style="font-size:13px"> 萬</small>','vs 峰值24萬',m.perbed>PEAK_PB?'warn':'ok',true)
+  +kpi('每床每日堂數',p.sess.toFixed(1)+'<small style="font-size:13px"> 堂</small>','vs 峰值3.3堂',p.sess>PEAK_SE?'warn':'ok',true);
+ var pbvs=(m.perbed/PEAK_PB-1)*100, sevs=(p.sess/PEAK_SE-1)*100;
+ var flag=(m.perbed>PEAK_PB||p.sess>PEAK_SE);
+ $('inote').innerHTML=(flag?'<b style="color:#A23B36">⚠ 超過真實峰值：</b>':'<b style="color:#1F6F5C">✓ 在已驗證範圍內：</b>')
+  +'每床產值 '+(m.perbed/10000).toFixed(1)+'萬（vs 24萬 '+(pbvs>=0?'+':'')+pbvs.toFixed(0)+'%）、每床每日 '+p.sess.toFixed(1)+'堂（vs 3.3堂 '+(sevs>=0?'+':'')+sevs.toFixed(0)+'%）。'
+  +(flag?'此設定高於表妹店歷史最佳月，須以價值槓桿(東區客單／會員制／私密護理／加購)佐證。':'低於或等於已驗證峰值，屬保守可信區間。');
+ // sticky mini-kpis
+ var sk=function(l,vv,cc){return '<div class="sk"><span>'+l+'</span><b'+(cc?' class="'+cc+'"':'')+'>'+vv+'</b></div>';};
+ $('skpis').innerHTML=sk('月營收',w(m.rev)+'萬')+sk('EBITDA率',(m.ebpct*100).toFixed(0)+'%',m.ebpct>0.30?'ok':'')+sk('回本',isFinite(m.payback)?m.payback.toFixed(0)+'月':'—',(!isFinite(m.payback)||m.payback>36)?'warn':'')+sk('5年MOIC',m.moic.toFixed(2)+'×',m.moic>2.5?'ok':'')+sk('每床vs峰值',(pbvs>=0?'+':'')+pbvs.toFixed(0)+'%',flag?'warn':'ok');
 }
 window.calc=calc;
-document.getElementById('foot').innerHTML='假設與口徑：新店 6 床、東區、月租 19 萬；成本結構＝耗材 5.5%、人事 max(33萬,31%)、行銷 max(10萬,7%)、租金 19 萬（固定）、其他含刷卡 7%+4萬。建店投入 567 萬，募資 600 萬、投前 1,200 萬、釋股 33.3%、8% 累積優先股息、1x 清算優先權，退出取 5× 成熟 EBITDA×持股 與清算優先較高者。營收以「每床月產值」直接設定（保守18.3／目標27.5／理想32.5 萬），對標表妹店峰值 24 萬/床。表妹店客單未知，每床每日堂數推估採客單 2,800 假設。6 床儀器以共用估列，若獨立配置建議募資上修至 650–700 萬。本頁為投資溝通參考，不構成投資建議。';
-calc();preset(275000);
+$('foot').innerHTML='假設與口徑：營收＝床數×開店天數×每床每日堂數×客單價；成本＝耗材5.5%、人事 max(33萬,31%)、行銷 max(10萬,7%)、租金(可調，預設19萬)、其他含刷卡 7%+4萬。建店投入 567 萬（6床儀器共用估列；獨立配置建議募資上修至 650–700 萬）。投前估值固定 1,200 萬、釋股＝募資/(1,200萬+募資)、8% 累積優先股息、1x 清算優先權，退出取「1x清算優先」與「成熟EBITDA×退出倍數×持股」較高者。真實錨點：表妹店峰值每床 24 萬、每床每日約 3.3 堂（客單 2,800 推估）。本頁為投資溝通互動工具，不構成投資建議。';
+preset('目標');
 })();
 </script>
 </body></html>
