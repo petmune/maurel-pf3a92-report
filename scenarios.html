@@ -196,7 +196,7 @@ function calc(){var pb=+document.getElementById('perbed').value,beds=+document.g
   +ik('店層 EBITDA 率',(m.p.ebpct*100).toFixed(1)+'%',w(m.p.ann)+'萬/年')
   +ik('成熟基礎回本',isFinite(m.payback)?m.payback.toFixed(0)+' 月':'不回本','建店投入 567萬')
   +ik('投資人 5年 MOIC',m.r.moic.toFixed(2)+'×','IRR '+(m.r.irr*100).toFixed(0)+'% · 釋股33.3%');
- document.getElementById('inote').innerHTML='每床產值 '+(pb/10000).toFixed(1)+' 萬 vs 表妹店峰值 24 萬：<b style="color:'+(vs>=0?'#1F6F5C':'#A23B36')+'">'+(vs>=0?'+':'')+vs.toFixed(0)+'%</b>　'+(vs<0?'（低於已驗證峰值，屬保守可信區間）':(vs<0.25?'（高於峰值，須靠價值槓桿達成）':'（遠高於峰值，屬天花板情境）'));
+ document.getElementById('inote').innerHTML='每床產值 '+(pb/10000).toFixed(1)+' 萬 vs 表妹店峰值 24 萬：<b style="color:'+(vs>=0?'#1F6F5C':'#A23B36')+'">'+(vs>=0?'+':'')+vs.toFixed(0)+'%</b>　'+(vs<0?'（低於已驗證峰值，屬保守可信區間）':(vs<25?'（高於峰值，須靠價值槓桿達成）':'（遠高於峰值，屬天花板情境）'));
 }
 window.calc=calc;
 document.getElementById('foot').innerHTML='假設與口徑：新店 6 床、東區、月租 19 萬；成本結構＝耗材 5.5%、人事 max(33萬,31%)、行銷 max(10萬,7%)、租金 19 萬（固定）、其他含刷卡 7%+4萬。建店投入 567 萬，募資 600 萬、投前 1,200 萬、釋股 33.3%、8% 累積優先股息、1x 清算優先權，退出取 5× 成熟 EBITDA×持股 與清算優先較高者。營收以「每床月產值」直接設定（保守18.3／目標27.5／理想32.5 萬），對標表妹店峰值 24 萬/床。表妹店客單未知，每床每日堂數推估採客單 2,800 假設。6 床儀器以共用估列，若獨立配置建議募資上修至 650–700 萬。本頁為投資溝通參考，不構成投資建議。';
